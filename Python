@@ -1,0 +1,69 @@
+
+class PersonalFinanceCalculator:
+    def __init__(self):
+        self.salary = 0
+        self.expenses = {}
+        self.total_expenses = 0
+        self.savings = 0
+
+    def input_salary(self):
+        while True:
+            try:
+                self.salary = float(input("Enter your monthly salary: ₹ "))
+                if self.salary < 0:
+                    raise ValueError
+                break
+            except ValueError:
+                print("Please enter a valid non-negative number for salary.")
+
+    def add_expense(self):
+        while True:
+            category = input("\nEnter expense category (or type 'done' to finish): ")
+            if category.lower() == 'done':
+                break
+            if category == "":
+                print("Category name cannot be empty.")
+                continue
+            try:
+                amount = float(input(f"Enter amount for {category}: ₹ "))
+                if amount < 0:
+                    raise ValueError
+                if category in self.expenses:
+                    self.expenses[category] += amount
+                else:
+                    self.expenses[category] = amount
+            except ValueError:
+                print("Please enter a valid non-negative number for the amount.")
+
+    def calculate_savings(self):
+        self.total_expenses = sum(self.expenses.values())
+        self.savings = self.salary - self.total_expenses
+
+    def display_summary(self):
+        print("\nHere's the Finance Summary ")
+        print(f"Total Salary: ₹ {self.salary:,.2f}")
+        print("Expenses:")
+        for category, amount in self.expenses.items():
+            print(f"{category}: ₹ {amount:,.2f}")
+        print(f"Total Expenses: ₹ {self.total_expenses:,.2f}")
+        print(f"Savings: ₹ {self.savings:,.2f}")
+
+        # Savings level feedback
+        if self.savings > 0.7 * self.salary:
+            print("You are saving well!")
+        elif self.savings > 0.1:
+            print("You have some savings. Consider reducing expenses.")
+        else:
+            print("You're spending more than you earn!")
+
+    def run(self):
+        print("Welcome to the Personal Finance Calculator!\n")
+        self.input_salary()
+        self.add_expense()
+        self.calculate_savings()
+        self.display_summary()
+
+# Run the program
+if __name__ == "__main__":
+    app = PersonalFinanceCalculator()
+    app.run()
